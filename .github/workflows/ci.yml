@@ -55,8 +55,3 @@ jobs:
           contex: .
           push: true
           tags: ${{ secrets.DOCKERHUB_REPOSITORY }}
-
-          
-    
-
-  
