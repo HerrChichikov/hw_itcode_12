@@ -1,0 +1,58 @@
+1) Создание аккаунта (Account) с использованием уже готовых школ (School) и юзеров (User)
+In [45] us_1 = models.User.objects.filter(name = 'us_1').first()
+In [46] sh_1 = models.School.objects.filter(name= 'sh_1').first()
+In [47] models.Account.objects.create(user = us_1, login = 'ac_1_log', password = 'ac_1_pas', school = sh_1)
+Out[47] Account Account - us_1
+
+
+2) Добавление аккаунту (Account) несколько курсов (Course)
+In [56] courses = [models.Course.objects.filter(name = 'cr_1').first(), models.Course.objects.filter(name = 'cr_2').first(), models.Course.objects.filter(name = 'cr_3').first()]
+In [57] ac_1 = models.Account.objects.filter(user= '1').first()
+In [58] ac_1.course.set(courses)
+
+
+3) Получение всех курсов (Course) у аккаунта (Account)
+In [59] ac_1 = models.Account.objects.filter(user= '1').first()
+In [60] ac_1.course.all()
+Out[60] QuerySet [Course cr_1, Course cr_2, Course cr_3]
+ 
+ 
+4) Получение количества курсов (Course) у аккаунта (Account)
+In [63] ac_1 = models.Account.objects.filter(user= '1').first()
+In [64] ac_1.course.count()
+Out[64] 3
+
+
+5) Вывод упорядоченного списка аккаунтов (Account) по id в обратном порядке и вывод их логинов
+In [79] models.Account.objects.values_list(login, flat = True).order_by(-user)
+Out[79] QuerySet ['ac_3_log', 'ac_2_log', 'ac_1_log']
+
+
+6) Удаление аккаунта (Account) c курсом с id = '3'
+In [87] models.Account.objects.filter(course = 3).first().delete()
+Out[87] (4, {'core.Account_course' 3, 'core.Account' 1})
+
+
+7) Изменение пароля у аккаунта (Account)
+In [15] models.Account.objects.filter(user = '3').update(password = 'new_ac_3_pas')
+Out[15] 1
+In [20] new_pas = models.Account.objects.filter(user = '3').first()
+In [21] new_pas.password
+Out[21] 'new_ac_3_pas'
+
+
+8) Удаление курса у аккаунта (Account)
+In [25] ac_3 = models.Account.objects.filter(user = '3').first()
+In [26] courses = models.Course.objects.filter(name = 'cr_5').first()
+In [27] ac_3.course.remove(courses)
+
+
+9) Получение аккаунтов (Account), которые не имеют курса под id = '1'
+In [36] ac_without_cr_1 = models.Account.objects.exclude(course = '1')
+In [37] ac_without_cr_1
+Out[37] QuerySet [Account Account - us_3]
+
+
+10) Получение аккаунтов (Account), что имеют в логине 'ac'
+In [38] models.Account.objects.filter(login__contains = 'ac')
+Out[38] QuerySet [Account Account - us_2, Account Account - us_3]

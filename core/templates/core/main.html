@@ -1,0 +1,11 @@
+{% extends 'core/base.html' %}
+{% block title %} Главная {% endblock %}<
+{% block content %}
+    <h1>Добро пожаловать (админу всё достуно (имя - admin, пароль - 1234))</h1>
+    <ul>
+        <li><h3><a href="{% url 'core:accounts' %}" role="button">Список пользователей</a></h3></li>
+        {% if request.user.is_superuser %}
+            <li><h3><a href="{% url 'core:account_create' %}" role="button">Создание пользователя</a></h3></li>
+        {% endif %}
+    </ul>
+{% endblock %}

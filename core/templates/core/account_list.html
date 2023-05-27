@@ -1,0 +1,47 @@
+{% extends 'core/base.html' %}
+{% block title %} {{ title }} {% endblock %}<
+{% block content %}
+    <h1>Список зарегистрированных пользователей (админу всё достуно (имя - admin, пароль - 1234))</h1>
+    <form method="GET">
+        {#        {{ form_search }}#}
+        {{ filter.form.as_p }}
+        <button class="btn btn-warning btn-sm" type="submit" role="button">Поиск</button>
+        <a class="btn btn-secondary btn-sm" href="{% url 'core:accounts' %}" role="button">Сброс</a>
+    </form>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">ID пользователя</th>
+            <th scope="col">Пользователь</th>
+            <th scope="col">Количество курсов</th>
+            <th scope="col">Школа пользователя</th>
+            {% if request.user.is_superuser %}
+                <th scope="col">Подробнее</th>
+                <th scope="col">Обновление</th>
+                <th scope="col">Удаление</th>
+            {% endif %}
+        </tr>
+        </thead>
+        {% for account in accounts %}
+            <tbody>
+            <tr>
+                <td>{{ account.pk }}</td>
+                <td>{{ account.user }}</td>
+                <td>{{ account.course.count }}</td>
+                <td>{{ account.school.name }}</td>
+                {% if request.user.is_superuser %}
+                    <td><a href="{% url 'core:account_detail' account.pk %}" role="button">Подробнее об акаунте</a></td>
+                    <td><a href="{% url 'core:account_update' account.pk %}" role="button">Обновление акаунта</a></td>
+                    <td><a href="{% url 'core:account_delete' account.pk %}" role="button">Удаление пользователя</a>
+                    </td>
+                {% endif %}
+            </tr>
+            </tbody>
+        {% empty %}
+            <h3>Список пользователей пуст</h3>
+        {% endfor %}
+    </table>
+    {% if request.user.is_superuser %}
+        <a class="btn btn-primary" href="{% url 'core:account_create' %}" role="button">Создание нового аккаунта</a>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'core/base.html' %}
+{% if request.user.is_superuser %}
+    {% block title %} {{ title }} {% endblock %}
+    {% block content %}
+        <h1>Обновление аккаунта пользователя {{ account.user }}</h1>
+        <form action="{% url 'core:account_update' pk=account.pk %}" method="POST">
+            {% csrf_token %}
+            <h4 hidden><p>{{ form.user }}</p></h4>
+            <h4><p>{{ form.login.label_tag }}</p></h4>
+            <h4><p>{{ form.login }}</p></h4>
+            <h4><p>{{ form.login.errors }}</p></h4>
+            <h4><p>{{ form.password.label_tag }}</p></h4>
+            <h4><p>{{ form.password }}</p></h4>
+            <h4><p>{{ form.course.label_tag }}</p></h4>
+            <h4><p>{{ form.course }}</p></h4>
+            <h4><p>{{ form.school.label_tag }}</p></h4>
+            <h4><p>{{ form.school }}</p></h4>
+            <button class="btn btn-success" type="submit">Обновить</button>
+            <a class="btn btn-secondary" href="{% url 'core:accounts' %}" role="button">Вернуться к аккаунтам</a>
+        </form>
+    {% endblock %}
+{% endif %}

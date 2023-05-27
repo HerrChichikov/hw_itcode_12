@@ -1,0 +1,19 @@
+{% extends 'core/base.html' %}
+{% if request.user.is_superuser %}
+{% block title %} {{ title }} {% endblock %}<
+{% block content %}
+    <h1>Информация об аккаунте пользователя: {{ account.user }}</h1>
+    <h3>ID: {{ account.pk }}</h3>
+    <h3>Количество курсов: {{ account.course.count }}</h3>
+    <h3>Курсы:</h3>
+    <ul>
+        {% for course in account.course.all %}
+            <li><h3>{{ course }}</h3></li>
+        {% empty %}
+            <h2>Список курсов пуст</h2>
+        {% endfor %}
+    </ul>
+    <h3>Школа: {{ account.school.name }}</h3>
+    <a class="btn btn-secondary" href="{% url 'core:accounts' %}" role="button">Все аккаунты</a>
+{% endblock %}
+{% endif %}
